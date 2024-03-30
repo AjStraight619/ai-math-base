@@ -92,7 +92,7 @@ const LoginForm = () => {
         <div className="w-full text-center mt-6">
           <Link
             className="text-sm hover:underline hover:opacity-100 opacity-30 transition-opacity duration-100"
-            href="/login"
+            href="/register"
           >
             Don't have an account?
           </Link>
