@@ -1,13 +1,19 @@
 "use server";
 import { prisma } from "@/lib/prisma";
-import { getUserId } from "./user";
+import { auth } from "@/auth";
 
 export const getChatsByUserId = async () => {
-  const userId = await getUserId();
+  const session = await auth();
+
+  if (!session || !session.user) {
+    return {
+      error: "Not authenticated",
+    };
+  }
   try {
     const chats = await prisma.chat.findMany({
       where: {
-        userId,
+        userId: session.user.id,
       },
     });
 

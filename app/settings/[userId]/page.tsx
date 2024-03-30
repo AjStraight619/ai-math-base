@@ -12,5 +12,9 @@ export default async function SettingsPage({
 }: SettingsPageProps) {
   const userData = await getUserData(userId);
 
-  return <UpdateUserForm userData={userData} />;
+  return (
+    <main className="min-h-screen flex items-center justify-center p-24 font-poppins">
+      <UpdateUserForm userData={userData} />
+    </main>
+  );
 }

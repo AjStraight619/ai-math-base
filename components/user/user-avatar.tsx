@@ -1,6 +1,7 @@
 import { Session } from "next-auth";
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { useSession } from "next-auth/react";
 
 type UserAvatarProps = {
   session: Session | null;

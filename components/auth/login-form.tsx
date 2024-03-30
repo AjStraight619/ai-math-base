@@ -78,7 +78,7 @@ const LoginForm = () => {
                 )}
               />
             </div>
-            <SubmitButton disabled={isPending} className="w-full">
+            <SubmitButton isPending={isPending} className="w-full">
               Log In
             </SubmitButton>
           </form>

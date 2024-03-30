@@ -69,7 +69,13 @@ const Sidebar = ({ chatMetaData, session }: SidebarProps) => {
   };
 
   // * If the user is on the home page, don't render the sidebar
-  if (pathname === "/" || pathname === "/register" || pathname === "/login")
+  if (
+    pathname === "/" ||
+    pathname === "/register" ||
+    pathname === "/login" ||
+    pathname.includes("/settings") ||
+    pathname.includes("/forgot-password")
+  )
     return null;
 
   const isDashboardPath = pathname === "/dashboard";
@@ -102,20 +108,25 @@ const Sidebar = ({ chatMetaData, session }: SidebarProps) => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="p-2">
                   <ul className="space-y-4 w-full">
-                    {dropdownLinks.map((link, index) => (
-                      <li className="w-full" key={index}>
-                        {link.separator && (
-                          <Separator className="w-full mb-2" />
-                        )}
-                        <Link
-                          className="flex flex-row items-center gap-x-2 hover:bg-gray-700/40 rounded-lg p-2 w-full transition-colors duration-150"
-                          href={link.href}
-                        >
-                          <span>{link.icon}</span>
-                          <span>{link.label}</span>
-                        </Link>
-                      </li>
-                    ))}
+                    {dropdownLinks.map((link, index) => {
+                      if (link.href === "/settings") {
+                        link.href = `/settings/${session?.user?.id}`;
+                      }
+                      return (
+                        <li className="w-full" key={index}>
+                          {link.separator && (
+                            <Separator className="w-full mb-2" />
+                          )}
+                          <Link
+                            className="flex flex-row items-center gap-x-2 hover:bg-gray-700/40 rounded-lg p-2 w-full transition-colors duration-150"
+                            href={link.href}
+                          >
+                            <span>{link.icon}</span>
+                            <span>{link.label}</span>
+                          </Link>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </DropdownMenuContent>
               </DropdownMenu>

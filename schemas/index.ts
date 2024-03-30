@@ -23,17 +23,16 @@ export const LoginSchema = z.object({
   }),
 });
 
-export const UpdateUserSchema = z
-  .object({
-    name: z.string(),
-    email: z.string().email(),
-    image: z.string().url().optional(),
-    password: z.string().min(8, {
-      message: "Password too short",
-    }),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
+export const UpdateUserSchema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+  image: z.string().url().or(z.literal("")).optional(),
+  //   password: z.string().min(8, {
+  //     message: "Password too short",
+  //   }),
+  //   confirmPassword: z.string(),
+  // })
+  // .refine((data) => data.password === data.confirmPassword, {
+  //   message: "Passwords do not match",
+  //   path: ["confirmPassword"],
+});

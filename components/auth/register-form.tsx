@@ -120,7 +120,11 @@ const RegisterForm = () => {
                 )}
               />
             </div>
-            <SubmitButton isPending={isPending} className="w-full">
+            <SubmitButton
+              disabled={isPending}
+              isPending={isPending}
+              className="w-full"
+            >
               Register
             </SubmitButton>
           </form>
