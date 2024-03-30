@@ -3,7 +3,7 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { UserFormType } from "@/lib/types";
-import { getErrorMessage, wait } from "@/lib/utils";
+import { getErrorMessage } from "@/lib/utils";
 import { UpdateUserSchema } from "@/schemas";
 import { User } from "@prisma/client";
 import { revalidatePath } from "next/cache";
