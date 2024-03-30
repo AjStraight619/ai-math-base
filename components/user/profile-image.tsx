@@ -23,7 +23,7 @@ const ProfileImage = ({ profileImage, selectedImage }: ProfileImageProps) => {
         URL.revokeObjectURL(selectedImageUrl);
       }
     };
-  }, [selectedImage]);
+  }, [selectedImage, selectedImageUrl]);
 
   return (
     <Avatar className="rounded-full w-20 h-20 p-[1px] border border-gray-50">

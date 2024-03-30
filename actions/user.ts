@@ -118,7 +118,7 @@ export const updateUser = async (values: UserFormType) => {
     };
   }
 
-  const { name, email, image } = validatedValues.data;
+  const { name, email } = validatedValues.data;
 
   try {
     const user = await prisma.user.update({

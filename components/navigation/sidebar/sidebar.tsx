@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { useSidebarContext } from "@/context/sidebar-presence-context";
 import SidebarDashboard from "@/components/dashboard-page/sidebar-dashboard";
+import SidebarChat from "./sidebar-chat";
 
 type SidebarProps = {
   chatMetaData: ChatMetaData;
@@ -79,6 +80,7 @@ const Sidebar = ({ chatMetaData, session }: SidebarProps) => {
     return null;
 
   const isDashboardPath = pathname === "/dashboard";
+  const isChatPath = pathname.includes("/chat");
 
   return (
     <>
@@ -90,23 +92,25 @@ const Sidebar = ({ chatMetaData, session }: SidebarProps) => {
             animate="show"
             exit="hidden"
             transition={{ type: "tween" }}
-            className="fixed top-0 h-full  w-48 border-r border-muted-foreground bg-zinc-900 p-2"
+            className="fixed top-0 h-full w-48 border-r border-muted-foreground bg-zinc-900 p-2 z-[999]"
           >
             <div className="flex flex-col items-center h-full">
               <div className="flex-1 w-full">
                 {isDashboardPath && (
                   <SidebarDashboard mostRecentChatId={mostRecentChatId} />
                 )}
+
+                {isChatPath && <SidebarChat chatData={chatMetaData} />}
               </div>
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <div className="w-full flex justify-evenly items-center py-2 hover:bg-gray-700/40 rounded-lg cursor-pointer">
+                  <div className="w-full flex justify-evenly items-center py-2 hover:bg-gray-700/40 rounded-lg cursor-pointer z-50">
                     <UserAvatar session={session} />
                     <span>{session?.user?.name}</span>
                   </div>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="p-2">
+                <DropdownMenuContent className="p-2 z-[999]">
                   <ul className="space-y-4 w-full">
                     {dropdownLinks.map((link, index) => {
                       if (link.href === "/settings") {

@@ -1,6 +1,9 @@
 "use server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
+import { getErrorMessage } from "@/lib/utils";
+import { MessagesToUpsert } from "@/lib/types";
+import { revalidatePath } from "next/cache";
 
 export const getChatsByUserId = async () => {
   const session = await auth();
@@ -54,4 +57,56 @@ export const getChatById = async (chatId: string) => {
     },
   });
   return chat;
+};
+
+export const saveMessagesToDb = async (
+  chatId: string,
+  messages: MessagesToUpsert[]
+) => {
+  try {
+    for (const message of messages) {
+      await prisma.message.create({
+        data: {
+          chatId: chatId,
+          role: message.role,
+          content: message.message,
+        },
+      });
+    }
+  } catch (err) {
+    const error = getErrorMessage(err);
+    return {
+      error,
+    };
+  }
+};
+
+export const deleteChat = async (chatId: string) => {
+  try {
+    const deletedChat = await prisma.$transaction([
+      prisma.message.deleteMany({
+        where: {
+          chatId,
+        },
+      }),
+      prisma.chat.delete({
+        where: {
+          id: chatId,
+        },
+      }),
+    ]);
+
+    return {
+      deletedChat,
+      error: null,
+    };
+  } catch (err) {
+    const error = getErrorMessage(err);
+    return {
+      error,
+      deletedChat: null,
+    };
+  } finally {
+    revalidatePath("/chat");
+  }
 };

@@ -64,7 +64,6 @@ model Message {
   content   String
   role     Role
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
   chat      Chat     @relation(fields: [chatId], references: [id])
   
 }
