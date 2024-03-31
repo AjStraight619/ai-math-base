@@ -59,27 +59,28 @@ export const getChatById = async (chatId: string) => {
   return chat;
 };
 
-export const saveMessagesToDb = async (
-  chatId: string,
-  messages: MessagesToUpsert[]
-) => {
-  try {
-    for (const message of messages) {
-      await prisma.message.create({
-        data: {
-          chatId: chatId,
-          role: message.role,
-          content: message.message,
-        },
-      });
-    }
-  } catch (err) {
-    const error = getErrorMessage(err);
-    return {
-      error,
-    };
-  }
-};
+// export const saveMessagesToDb = async (
+//   chatId: string,
+//   messages: MessagesToUpsert[]
+// ) => {
+//   try {
+//     console.log("In saveMessagesToDb function");
+//     for (const message of messages) {
+//       await prisma.message.create({
+//         data: {
+//           chatId: chatId,
+//           role: message.role,
+//           content: message.message,
+//         },
+//       });
+//     }
+//   } catch (err) {
+//     const error = getErrorMessage(err);
+//     return {
+//       error,
+//     };
+//   }
+// };
 
 export const deleteChat = async (chatId: string) => {
   try {

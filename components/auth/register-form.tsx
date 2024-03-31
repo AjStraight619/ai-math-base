@@ -28,10 +28,14 @@ import Socials from "./socials";
 import { Separator } from "../ui/separator";
 import Link from "next/link";
 
+import { useRouter } from "next/navigation";
+import { ErrorMessage, SuccessMessage } from "./auth-messages";
+
 const RegisterForm = () => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
+  const { push } = useRouter();
 
   const form = useForm<RegisterFormType>({
     resolver: zodResolver(RegisterSchema),
@@ -47,10 +51,14 @@ const RegisterForm = () => {
     setError("");
     setSuccess("");
     startTransition(() => {
-      register(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
-      });
+      register(values)
+        .then((data) => {
+          setError(data.error);
+          setSuccess(data.success);
+        })
+        .then(() => {
+          if (success) push("/dashboard");
+        });
     });
   };
 
@@ -127,6 +135,7 @@ const RegisterForm = () => {
             >
               Register
             </SubmitButton>
+            <ErrorMessage errorMessage={error} />
           </form>
         </Form>
         <div className="flex flex-row items-center justify-center overflow-hidden gap-2 mt-6">

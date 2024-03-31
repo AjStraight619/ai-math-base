@@ -22,7 +22,7 @@ import {
   SettingsIcon,
 } from "lucide-react";
 import { useSidebarContext } from "@/context/sidebar-presence-context";
-import SidebarDashboard from "@/components/dashboard-page/sidebar-dashboard";
+import SidebarDashboard from "@/components/navigation/sidebar/sidebar-dashboard";
 import SidebarChat from "./sidebar-chat";
 
 type SidebarProps = {

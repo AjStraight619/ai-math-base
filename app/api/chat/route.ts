@@ -1,9 +1,13 @@
 import OpenAI from "openai";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import { MessagesToUpsert } from "@/lib/types";
-import { saveMessagesToDb } from "@/actions/chat";
 
 export const runtime = "edge";
+
+const baseUrl =
+  process.env.NODE_ENV === "production"
+    ? "https://ai-math-base.vercel.app"
+    : "http://localhost:3000";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
@@ -30,11 +34,22 @@ export async function POST(req: Request) {
         },
         {
           role: "assistant",
-          message: completion,
+          content: completion,
         },
       ];
 
-      await saveMessagesToDb(chatId, messagesToUpsert);
+      console.log(JSON.stringify(messagesToUpsert, null, 2));
+
+      await fetch(`${baseUrl}/api/user/chat`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          chatId,
+          conversationUpdate: messagesToUpsert,
+        }),
+      });
     },
   });
 

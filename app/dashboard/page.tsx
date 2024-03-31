@@ -12,7 +12,7 @@ export default async function DashboardPage() {
           });
         }}
       >
-        <SubmitButton>Sign Out</SubmitButton>
+        {/* <SubmitButton>Sign Out</SubmitButton> */}
       </form>
     </main>
   );

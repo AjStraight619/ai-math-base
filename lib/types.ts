@@ -27,6 +27,6 @@ export type ExtendedMessage = Message & {
 };
 
 export type MessagesToUpsert = {
-  message: string;
+  content: string;
   role: Role;
 };
