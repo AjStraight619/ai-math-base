@@ -47,6 +47,8 @@ const RegisterForm = () => {
     },
   });
 
+  // Register form submit handler
+
   const onSubmit = (values: RegisterFormType) => {
     setError("");
     setSuccess("");
