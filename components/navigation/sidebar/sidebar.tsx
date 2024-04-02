@@ -75,7 +75,8 @@ const Sidebar = ({ chatMetaData, session }: SidebarProps) => {
     pathname === "/register" ||
     pathname === "/login" ||
     pathname.includes("/settings") ||
-    pathname.includes("/forgot-password")
+    pathname.includes("/forgot-password") ||
+    pathname.includes("/dashboard")
   )
     return null;
 
@@ -140,7 +141,7 @@ const Sidebar = ({ chatMetaData, session }: SidebarProps) => {
       </AnimatePresence>
       <motion.button
         onClick={handleSidebarToggle}
-        className="fixed -translate-y-1/2 top-1/2 cursor-pointer z-[999]"
+        className="fixed -translate-y-1/2 top-1/2 cursor-pointer z-[999] hidden md:block"
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
         animate={isSidebarOpen ? "show" : "hidden"}
