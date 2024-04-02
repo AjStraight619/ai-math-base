@@ -53,6 +53,8 @@ model Chat {
   name      String
   messages  Message[]
   tags      Tag[]
+  subjectId String?
+  subject   Subject? @relation(fields: [subjectId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   user      User     @relation(fields: [userId], references: [id])
@@ -80,6 +82,16 @@ model Tag {
   folders   Folder[]
 }
 
+model Subject {
+  id        String   @id @default(uuid())
+  name      String
+  chats     Chat[]
+  folders   Folder[]
+  notes    Note[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 
 model Folder {
   id        String   @id @default(uuid())
@@ -88,7 +100,10 @@ model Folder {
   updatedAt DateTime @updatedAt
   name      String   @unique
   notes     Note[]
-  tags     Tag[]
+  tags      Tag[]
+  subjectId String?
+  subject   Subject? @relation(fields: [subjectId], references: [id])
+  
   user      User     @relation(fields: [userId], references: [id])
 }
 
@@ -102,6 +117,8 @@ model Note {
   content   String
   folder    Folder   @relation(fields: [folderId], references: [id])
   tags      Tag[]
+  subjectId String?
+  subject   Subject? @relation(fields: [subjectId], references: [id])
   NoteContent NoteContent[]
 }
 
@@ -115,8 +132,6 @@ model NoteContent {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
-
-
 
 enum Role {
   system
