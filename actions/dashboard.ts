@@ -1,5 +1,5 @@
-"use server";
-import { prisma } from "@/lib/prisma";
+'use server'
+import { prisma } from '@/lib/prisma'
 
 export const getDashboardData = async (userId: string) => {
   const [user, chats, notes] = await Promise.all([
@@ -15,10 +15,11 @@ export const getDashboardData = async (userId: string) => {
       include: {
         messages: {
           orderBy: {
-            createdAt: "desc",
+            createdAt: 'desc',
           },
           take: 1,
         },
+        subjects: true,
       },
     }),
     prisma.folder.findMany({
@@ -29,11 +30,11 @@ export const getDashboardData = async (userId: string) => {
         notes: true,
       },
     }),
-  ]);
+  ])
 
   return {
     user,
     chats,
     notes,
-  };
-};
+  }
+}

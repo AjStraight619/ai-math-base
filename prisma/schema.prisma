@@ -53,8 +53,7 @@ model Chat {
   name      String
   messages  Message[]
   tags      Tag[]
-  subjectId String?
-  subject   Subject? @relation(fields: [subjectId], references: [id])
+  subjects  Subject[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   user      User     @relation(fields: [userId], references: [id])
@@ -84,10 +83,11 @@ model Tag {
 
 model Subject {
   id        String   @id @default(uuid())
+  chatId    String?  
+  folderId  String?
   name      String
-  chats     Chat[]
-  folders   Folder[]
-  notes    Note[]
+  chat      Chat?    @relation(fields: [chatId], references: [id])
+  folder    Folder?   @relation(fields: [folderId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -101,9 +101,7 @@ model Folder {
   name      String   @unique
   notes     Note[]
   tags      Tag[]
-  subjectId String?
-  subject   Subject? @relation(fields: [subjectId], references: [id])
-  
+  subjects Subject[]
   user      User     @relation(fields: [userId], references: [id])
 }
 
@@ -117,8 +115,7 @@ model Note {
   content   String
   folder    Folder   @relation(fields: [folderId], references: [id])
   tags      Tag[]
-  subjectId String?
-  subject   Subject? @relation(fields: [subjectId], references: [id])
+
   NoteContent NoteContent[]
 }
 
