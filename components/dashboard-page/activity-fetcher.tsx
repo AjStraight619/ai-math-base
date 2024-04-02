@@ -1,7 +1,6 @@
 import { getDashboardData } from '@/actions/dashboard'
 import { Session } from 'next-auth'
 import React from 'react'
-import SectionDivider from './section-divider'
 import ChatActivity from './chat-activity'
 import NoteActivity from './note-activity'
 import { wait } from '@/lib/utils'
@@ -17,7 +16,7 @@ const ActivityFetcher = async ({ session }: ActivityFetcherProps) => {
 
   const { user, chats, notes } = await getDashboardData(session.user.id)
 
-  await wait(5000)
+  await wait(3000)
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -5,6 +5,7 @@ import ChatActivity from '@/components/dashboard-page/chat-activity'
 import DashboardSkeleton from '@/components/dashboard-page/dashboard-skeleton'
 import NoteActivity from '@/components/dashboard-page/note-activity'
 import SectionDivider from '@/components/dashboard-page/section-divider'
+import UserButton from '@/components/user/user-button'
 import { wait } from '@/lib/utils'
 import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
@@ -17,10 +18,13 @@ export default async function DashboardPage() {
 
   return (
     <main className="w-full flex flex-col items-center">
-      <h1 className="text-4xl font-poppins text-secondary p-6 text-left">
+      <div className="fixed top-4 right-4">
+        <UserButton />
+      </div>
+      <h1 className="text-4xl font-poppins text-secondary pt-12 md:pt-6">
         Dashboard
       </h1>
-      <h2 className="font-poppins text-xl">
+      <h2 className="font-poppins text-xl pt-8">
         Welcome back {session?.user?.name?.split(' ').slice(0, -1)}!
       </h2>
       <div className="container">

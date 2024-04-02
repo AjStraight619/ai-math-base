@@ -55,7 +55,7 @@ const ChatActivityChart = ({ subjects }: ChatActivityChartProps) => {
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
-        {/* <Tooltip /> */}
+        <Tooltip />
         <Legend />
       </PieChart>
     </ResponsiveContainer>

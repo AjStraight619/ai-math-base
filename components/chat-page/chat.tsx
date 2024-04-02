@@ -1,18 +1,21 @@
-"use client";
+'use client'
 
-import { useChat } from "ai/react";
-import { ChatById, ExtendedMessage } from "@/lib/types";
-import ChatMessages from "./chat-messages";
-import ChatInput from "./chat-input";
-import { usePathname } from "next/navigation";
+import { useChat } from 'ai/react'
+import { ChatById, ExtendedMessage } from '@/lib/types'
+import ChatMessages from './chat-messages'
+import ChatInput from './chat-input'
+import { usePathname } from 'next/navigation'
+import { useEffect, useMemo, useRef } from 'react'
 
 export type ChatProps = {
-  chat: ChatById;
-};
+  chat: ChatById
+}
 
 const Chat = ({ chat }: ChatProps) => {
-  const { messages: dbMessages } = chat ?? {};
-  const pathname = usePathname();
+  const { messages: dbMessages } = chat ?? {}
+  const pathname = usePathname()
+
+  const renderCountRef = useRef(0)
 
   const {
     messages,
@@ -24,21 +27,27 @@ const Chat = ({ chat }: ChatProps) => {
     isLoading,
   } = useChat({
     body: {
-      chatId: pathname.split("/").pop() as string,
+      chatId: pathname.split('/').pop() as string,
     },
-  });
+  })
 
-  const combinedMessages: ExtendedMessage[] = [
-    ...(dbMessages ?? []),
-    ...messages,
-  ].map((message) => ({
-    ...message,
-    chatId: chat?.id as string,
-  }));
+  useEffect(() => {
+    renderCountRef.current += 1
+    console.log('Chat rendered', renderCountRef.current)
+  }, [])
+
+  const combinedMessages = useMemo(
+    () =>
+      [...(dbMessages ?? []), ...messages].map((message) => ({
+        ...message,
+        chatId: chat?.id as string,
+      })),
+    [dbMessages, messages, chat?.id]
+  )
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    handleInputChange(e);
-  };
+    handleInputChange(e)
+  }
 
   return (
     <div className="overflow-x-hidden">
@@ -50,7 +59,7 @@ const Chat = ({ chat }: ChatProps) => {
         isLoading={isLoading}
       />
     </div>
-  );
-};
+  )
+}
 
-export default Chat;
+export default Chat

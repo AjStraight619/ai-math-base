@@ -1,87 +1,88 @@
-"use client";
+'use client'
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import UserAvatar from "@/components/user/user-avatar";
-import { ChatMetaData } from "@/lib/types";
-import { Session } from "next-auth";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React, { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { Separator } from "@/components/ui/separator";
+} from '@/components/ui/dropdown-menu'
+import UserAvatar from '@/components/user/user-avatar'
+import { ChatMetaData } from '@/lib/types'
+import { Session } from 'next-auth'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import React, { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Separator } from '@/components/ui/separator'
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
   LayoutDashboardIcon,
   LogOutIcon,
   SettingsIcon,
-} from "lucide-react";
-import { useSidebarContext } from "@/context/sidebar-presence-context";
-import SidebarDashboard from "@/components/navigation/sidebar/sidebar-dashboard";
-import SidebarChat from "./sidebar-chat";
+} from 'lucide-react'
+import { useSidebarContext } from '@/context/sidebar-presence-context'
+import SidebarDashboard from '@/components/navigation/sidebar/sidebar-dashboard'
+import SidebarChat from './sidebar-chat'
+import UserButton from '@/components/user/user-button'
 
 type SidebarProps = {
-  chatMetaData: ChatMetaData;
-  session: Session | null;
-};
+  chatMetaData: ChatMetaData
+  session: Session | null
+}
 
 const dropdownLinks = [
   {
-    label: "Dashboard",
-    href: "/dashboard",
+    label: 'Dashboard',
+    href: '/dashboard',
     icon: React.createElement(LayoutDashboardIcon),
   },
   {
-    label: "Settings",
-    href: "/settings",
+    label: 'Settings',
+    href: '/settings',
     icon: React.createElement(SettingsIcon),
   },
   {
-    label: "Sign Out",
-    href: "/api/auth/signout",
+    label: 'Sign Out',
+    href: '/api/auth/signout',
     icon: React.createElement(LogOutIcon),
     separator: true,
   },
-];
+]
 
 const sidebarVariants = {
-  hidden: { x: "-100%" },
+  hidden: { x: '-100%' },
   show: { x: 0 },
-};
+}
 
 const buttonVariants = {
   hidden: { left: 0 },
-  show: { left: "12rem" },
-};
+  show: { left: '12rem' },
+}
 
 const Sidebar = ({ chatMetaData, session }: SidebarProps) => {
-  const pathname = usePathname();
-  const mostRecentChatId = chatMetaData[0]?.id ?? "";
+  const pathname = usePathname()
+  const mostRecentChatId = chatMetaData[0]?.id ?? ''
 
-  const { isSidebarOpen, setIsSidebarOpen } = useSidebarContext();
-  const [isHovering, setIsHovering] = useState(false);
+  const { isSidebarOpen, setIsSidebarOpen } = useSidebarContext()
+  const [isHovering, setIsHovering] = useState(false)
   const handleSidebarToggle = () => {
-    setIsSidebarOpen((prev) => !prev);
-  };
+    setIsSidebarOpen((prev) => !prev)
+  }
 
   // * If the user is on the home page, don't render the sidebar
   if (
-    pathname === "/" ||
-    pathname === "/register" ||
-    pathname === "/login" ||
-    pathname.includes("/settings") ||
-    pathname.includes("/forgot-password") ||
-    pathname.includes("/dashboard")
+    pathname === '/' ||
+    pathname === '/register' ||
+    pathname === '/login' ||
+    pathname.includes('/settings') ||
+    pathname.includes('/forgot-password') ||
+    pathname.includes('/dashboard')
   )
-    return null;
+    return null
 
-  const isDashboardPath = pathname === "/dashboard";
-  const isChatPath = pathname.includes("/chat");
+  const isDashboardPath = pathname === '/dashboard'
+  const isChatPath = pathname.includes('/chat')
 
   return (
     <>
@@ -92,7 +93,7 @@ const Sidebar = ({ chatMetaData, session }: SidebarProps) => {
             initial="hidden"
             animate="show"
             exit="hidden"
-            transition={{ type: "tween" }}
+            transition={{ type: 'tween' }}
             className="fixed top-0 h-full w-48 border-r border-muted-foreground bg-zinc-900 p-2 z-[999]"
           >
             <div className="flex flex-col items-center h-full">
@@ -104,37 +105,7 @@ const Sidebar = ({ chatMetaData, session }: SidebarProps) => {
                 {isChatPath && <SidebarChat chatData={chatMetaData} />}
               </div>
 
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <div className="w-full flex justify-evenly items-center py-2 hover:bg-gray-700/40 rounded-lg cursor-pointer z-50">
-                    <UserAvatar session={session} />
-                    <span>{session?.user?.name}</span>
-                  </div>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="p-2 z-[999]">
-                  <ul className="space-y-4 w-full">
-                    {dropdownLinks.map((link, index) => {
-                      if (link.href === "/settings") {
-                        link.href = `/settings/${session?.user?.id}`;
-                      }
-                      return (
-                        <li className="w-full" key={index}>
-                          {link.separator && (
-                            <Separator className="w-full mb-2" />
-                          )}
-                          <Link
-                            className="flex flex-row items-center gap-x-2 hover:bg-gray-700/40 rounded-lg p-2 w-full transition-colors duration-150"
-                            href={link.href}
-                          >
-                            <span>{link.icon}</span>
-                            <span>{link.label}</span>
-                          </Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <UserButton />
             </div>
           </motion.aside>
         )}
@@ -144,7 +115,7 @@ const Sidebar = ({ chatMetaData, session }: SidebarProps) => {
         className="fixed -translate-y-1/2 top-1/2 cursor-pointer z-[999] hidden md:block"
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
-        animate={isSidebarOpen ? "show" : "hidden"}
+        animate={isSidebarOpen ? 'show' : 'hidden'}
         variants={buttonVariants}
       >
         {isHovering ? (
@@ -158,7 +129,7 @@ const Sidebar = ({ chatMetaData, session }: SidebarProps) => {
         )}
       </motion.button>
     </>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar
