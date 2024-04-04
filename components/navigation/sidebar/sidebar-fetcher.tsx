@@ -8,8 +8,6 @@ const SidebarFetcher = async () => {
 
   const chatMetaData = await getChatMetaDataByUserId(session?.user?.id);
 
-  console.log("Chat Meta Data", chatMetaData);
-
   return <Sidebar chatMetaData={chatMetaData} session={session} />;
 };
 

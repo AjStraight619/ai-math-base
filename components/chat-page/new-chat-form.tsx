@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import React, { useEffect, useState, useTransition } from 'react'
-import { v4 as uuid } from 'uuid'
+import React, { useEffect, useState, useTransition } from "react";
+import { v4 as uuid } from "uuid";
 import {
   Dialog,
   DialogTrigger,
@@ -11,11 +11,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from '@/components/ui/dialog'
-import { Button } from '../ui/button'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { NewChatSchema } from '@/schemas'
+} from "@/components/ui/dialog";
+import { Button } from "../ui/button";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { NewChatSchema } from "@/schemas";
 import {
   Form,
   FormControl,
@@ -23,91 +23,91 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '../ui/form'
-import { NewChatFormType } from '@/lib/types'
-import { Input } from '../ui/input'
-import { PlusIcon, X, XIcon } from 'lucide-react'
-import SubmitButton from '../ui/submit-button'
-import { motion } from 'framer-motion'
-import { Badge } from '../ui/badge'
-import { createNewChat } from '@/actions/chat'
-import { ErrorMessage } from '../ui/form-messages'
-import { ChatAction } from '../navigation/sidebar/sidebar-chat'
-import { getErrorMessage } from '@/lib/utils'
+} from "../ui/form";
+import { NewChatFormType } from "@/lib/types";
+import { Input } from "../ui/input";
+import { PlusIcon, X, XIcon } from "lucide-react";
+import SubmitButton from "../ui/submit-button";
+import { motion } from "framer-motion";
+import { Badge } from "../ui/badge";
+import { createNewChat } from "@/actions/chat";
+import { ErrorMessage } from "../ui/form-messages";
+import { ChatAction } from "../navigation/sidebar/sidebar-chat";
+import { getErrorMessage } from "@/lib/utils";
 
 type NewChatFormProps = {
-  isOnSidebar?: boolean
-  dispatch: (action: ChatAction) => void
-}
+  isOnSidebar?: boolean;
+  dispatch: (action: ChatAction) => void;
+};
 
 type Tag = {
-  id: string
-  name: string
-}
+  id: string;
+  name: string;
+};
 
 const NewChatForm = ({ isOnSidebar, dispatch }: NewChatFormProps) => {
-  const [isPending, startTransition] = useTransition()
-  const [currentTag, setCurrentTag] = useState('')
-  const [submitError, setSubmitError] = useState('')
-  const [tags, setTags] = useState<Tag[]>([])
-  const [tagError, setTagError] = useState<string>('')
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isPending, startTransition] = useTransition();
+  const [currentTag, setCurrentTag] = useState("");
+  const [submitError, setSubmitError] = useState("");
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [tagError, setTagError] = useState<string>("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(NewChatSchema),
     defaultValues: {
-      name: 'New Chat',
-      subject: '',
-      tags: '',
+      name: "New Chat",
+      subject: "",
+      tags: "",
     },
-  })
+  });
 
   const handleTagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value)
-    setCurrentTag(e.target.value)
-  }
+    console.log(e.target.value);
+    setCurrentTag(e.target.value);
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    setTagError('')
+    setTagError("");
 
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       if (tags.some((tag) => tag.name === currentTag)) {
-        setTagError('Tag already exists')
-        return
+        setTagError("Tag already exists");
+        return;
       }
       if (currentTag.length <= 1) {
-        setTagError('Tag too short')
-        return
+        setTagError("Tag too short");
+        return;
       }
-      setTags((prevTags) => [...prevTags, { id: uuid(), name: currentTag }])
-      setCurrentTag('')
-      e.preventDefault()
+      setTags((prevTags) => [...prevTags, { id: uuid(), name: currentTag }]);
+      setCurrentTag("");
+      e.preventDefault();
     }
-  }
+  };
 
   const handleRemoveTag = (tagId: string) => {
-    setTags(tags.filter((tag) => tag.id !== tagId))
-  }
+    setTags(tags.filter((tag) => tag.id !== tagId));
+  };
 
-  const onSubmit = (values: Omit<NewChatFormType, 'tags'>) => {
-    setSubmitError('')
+  const onSubmit = (values: Omit<NewChatFormType, "tags">) => {
+    setSubmitError("");
     const newChatData = {
       ...values,
       tags: tags,
-    }
+    };
 
     startTransition(() => {
       createNewChat(newChatData).then(
-        () => {
-          form.reset()
+        (data) => {
+          form.reset();
         },
         (err: unknown) => {
-          const error = getErrorMessage(err)
-          setSubmitError(error)
+          const error = getErrorMessage(err);
+          setSubmitError(error);
         }
-      )
-    })
-  }
+      );
+    });
+  };
 
   return (
     <Dialog>
@@ -150,7 +150,7 @@ const NewChatForm = ({ isOnSidebar, dispatch }: NewChatFormProps) => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Subject{' '}
+                      Subject{" "}
                       <span className="ml-1 text-muted-foreground text-sm">
                         (optional)
                       </span>
@@ -176,8 +176,8 @@ const NewChatForm = ({ isOnSidebar, dispatch }: NewChatFormProps) => {
                       <Input
                         {...field}
                         onChange={(e) => {
-                          handleTagChange(e)
-                          field.onChange(e)
+                          handleTagChange(e);
+                          field.onChange(e);
                         }}
                         onKeyDown={handleKeyDown}
                         value={currentTag}
@@ -217,7 +217,7 @@ const NewChatForm = ({ isOnSidebar, dispatch }: NewChatFormProps) => {
         </div>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
 
-export default NewChatForm
+export default NewChatForm;

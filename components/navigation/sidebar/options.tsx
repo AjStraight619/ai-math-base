@@ -2,90 +2,131 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover'
-import { Ellipsis, PencilIcon, TrashIcon } from 'lucide-react'
-import { usePathname } from 'next/navigation'
-import React, { useState } from 'react'
-import { motion } from 'framer-motion'
-import { liVariants, ulVariants } from '@/lib/data'
-import { ChatAction } from './sidebar-chat'
-import { deleteChat } from '@/actions/chat'
+} from "@/components/ui/popover";
+import { Ellipsis, PencilIcon, TrashIcon } from "lucide-react";
+import { usePathname } from "next/navigation";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { liVariants, ulVariants } from "@/lib/data";
+import { ChatAction } from "./sidebar-chat";
+import { deleteChat } from "@/actions/chat";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import SubmitButton from "@/components/ui/submit-button";
+import { useToast } from "@/components/ui/use-toast";
 
 type OptionsProps = {
-  dispatch: (action: ChatAction) => void
-}
-
-type ChatOption = {
-  label: string
-  icon: JSX.Element
-  action: (id: string) => void | Promise<void>
-}
+  dispatch: (action: ChatAction) => void;
+};
 
 const Options = ({ dispatch }: OptionsProps) => {
-  const pathname = usePathname()
-  const chatId = pathname.split('/').pop()
-
-  const [isDeleting, setIsDeleting] = useState(false)
-  const [isEditing, setIsEditing] = useState(false)
-
-  const chatOptions: ChatOption[] = [
-    {
-      label: 'Delete Chat',
-      icon: React.createElement(TrashIcon),
-      action: async (id: string) => {
-        if (typeof chatId === 'string') {
-          dispatch({ type: 'REMOVE', payload: chatId })
-          await deleteChat(id)
-        } else {
-        }
-      },
-    },
-    {
-      label: 'Edit Chat',
-      icon: React.createElement(PencilIcon),
-      action: (id: string) => {},
-    },
-  ]
-
-  const handleClick = (option: string) => {
-    if (option === 'Delete Chat') {
-      setIsDeleting(true)
-    } else {
-      setIsEditing(true)
-    }
-  }
+  const pathname = usePathname();
 
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <button>
+    <>
+      <Popover>
+        <PopoverTrigger asChild>
           <Ellipsis />
-        </button>
-      </PopoverTrigger>
-      <PopoverContent className="z-[999] space-y-2">
-        <motion.ul
-          className="flex items-center justify-start flex-col gap-y-2"
-          initial="hidden"
-          animate="show"
-          variants={ulVariants}
-        >
-          {chatOptions.map((option, index) => (
-            <motion.li className="list-none" variants={liVariants} key={index}>
-              <button
-                onClick={() => option.action(chatId as string)}
-                className="w-full flex flex-row gap-x-2"
-              >
-                <span>{option.icon}</span>
-                <span>{option.label}</span>
-              </button>
+        </PopoverTrigger>
+        <PopoverContent className="z-[999] max-w-[10rem]">
+          <motion.ul
+            className="py-2 h-full"
+            initial="hidden"
+            animate="show"
+            variants={ulVariants}
+          >
+            <motion.li variants={liVariants}>
+              <DeleteAlert dispatch={dispatch} />
             </motion.li>
-          ))}
-        </motion.ul>
-      </PopoverContent>
-    </Popover>
-  )
-}
+          </motion.ul>
+        </PopoverContent>
+      </Popover>
+    </>
+  );
+};
 
-export default Options
+export default Options;
 
-const DeletAlert = () => {}
+type DeleteAlertProps = {
+  dispatch: (action: ChatAction) => void;
+};
+
+const DeleteAlert = ({ dispatch }: DeleteAlertProps) => {
+  const pathname = usePathname();
+  const chatId = pathname.split("/").pop() as unknown as string;
+  const { toast } = useToast();
+
+  const handleDeleteChat = async (formData: FormData) => {
+    formData.append("chatId", chatId);
+    dispatch({
+      type: "REMOVE",
+      payload: chatId,
+    });
+
+    const { deletedChat, error } = await deleteChat(formData);
+
+    // First, check if there was an error.
+    if (error) {
+      toast({
+        title: "Error",
+        description: error,
+        duration: 3000,
+      });
+      return;
+    }
+
+    if (deletedChat) {
+      const chatName = deletedChat[1].name || "Chat";
+      toast({
+        title: "Chat deleted",
+        description: `${chatName} has been deleted.`,
+        duration: 3000,
+      });
+    } else {
+      toast({
+        title: "Deletion Unconfirmed",
+        description: "The chat deletion could not be confirmed.",
+        duration: 3000,
+      });
+    }
+  };
+
+  return (
+    <>
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <button className="inline-flex items-center gap-x-2">
+            <TrashIcon size={20} />
+            <span>Delete Chat</span>
+          </button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete this
+              chat and remove the chat data from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+
+            <form action={handleDeleteChat}>
+              <SubmitButton variant="destructive" className="w-full">
+                Delete
+              </SubmitButton>
+            </form>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
+  );
+};

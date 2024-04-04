@@ -1,34 +1,35 @@
-import type { Metadata } from 'next'
-import { Inter, Poppins } from 'next/font/google'
-import './globals.css'
-import { ThemeProvider } from '@/providers/theme-provider'
-import ActiveSectionContextProvider from '@/context/active-section-context'
-import AuthProvider from '@/providers/auth-provider'
-import SidebarFetcher from '@/components/navigation/sidebar/sidebar-fetcher'
-import SidebarPresenceProvider from '@/context/sidebar-presence-context'
+import type { Metadata } from "next";
+import { Inter, Poppins } from "next/font/google";
+import "./globals.css";
+import { ThemeProvider } from "@/providers/theme-provider";
+import ActiveSectionContextProvider from "@/context/active-section-context";
+import AuthProvider from "@/providers/auth-provider";
+import SidebarFetcher from "@/components/navigation/sidebar/sidebar-fetcher";
+import SidebarPresenceProvider from "@/context/sidebar-presence-context";
+import { Toaster } from "@/components/ui/toaster";
 
 const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['600'],
-  variable: '--font-poppins',
-})
+  subsets: ["latin"],
+  weight: ["600"],
+  variable: "--font-poppins",
+});
 
 const inter = Inter({
-  subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  variable: '--font-inter',
-})
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-inter",
+});
 
 export const metadata: Metadata = {
-  title: 'Math Base',
+  title: "Math Base",
   description:
-    'An AI math learning platform that leverage GPT-4 and Wolfram Alpha',
-}
+    "An AI math learning platform that leverage GPT-4 and Wolfram Alpha",
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <>
@@ -48,6 +49,7 @@ export default function RootLayout({
                 <SidebarPresenceProvider>
                   <SidebarFetcher />
                   {children}
+                  <Toaster />
                 </SidebarPresenceProvider>
               </ActiveSectionContextProvider>
             </AuthProvider>
@@ -55,5 +57,5 @@ export default function RootLayout({
         </body>
       </html>
     </>
-  )
+  );
 }
