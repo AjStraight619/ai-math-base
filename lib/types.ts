@@ -1,4 +1,10 @@
-import { LoginSchema, RegisterSchema, UpdateUserSchema } from '@/schemas'
+import {
+  LoginSchema,
+  NewChatSchema,
+  RegisterSchema,
+  ServerNewChatSchema,
+  UpdateUserSchema,
+} from '@/schemas'
 import { z } from 'zod'
 import { navLinks } from './data'
 import { getChatById, getChatMetaDataByUserId } from '@/actions/chat'
@@ -35,3 +41,7 @@ export type ChatWithMessages = Chat & {
   messages: Message[]
   subjects: Subject[]
 }
+
+export type NewChatFormType = z.infer<typeof NewChatSchema>
+
+export type NewChatServer = z.infer<typeof ServerNewChatSchema>

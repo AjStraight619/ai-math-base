@@ -21,7 +21,7 @@ export default async function DashboardPage() {
       <div className="fixed top-4 right-4">
         <UserButton />
       </div>
-      <h1 className="text-4xl font-poppins text-secondary pt-12 md:pt-6">
+      <h1 className="text-4xl font-poppins text-muted-foreground pt-12 md:pt-6">
         Dashboard
       </h1>
       <h2 className="font-poppins text-xl pt-8">

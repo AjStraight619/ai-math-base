@@ -37,7 +37,7 @@ const UserButton = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="w-full flex justify-evenly gap-x-2 p-2 items-center  hover:bg-gray-700/40 rounded-lg cursor-pointer z-50">
+        <div className="w-full flex justify-evenly gap-x-2 p-2 items-center  hover:bg-muted-foreground/20  rounded-lg cursor-pointer z-50">
           <UserAvatar session={session} />
           <span>{session?.user?.name}</span>
         </div>
@@ -52,7 +52,7 @@ const UserButton = () => {
               <li className="w-full" key={index}>
                 {link.separator && <Separator className="w-full mb-2" />}
                 <Link
-                  className="flex flex-row items-center gap-x-2 hover:bg-gray-700/40 rounded-lg p-2 w-full transition-colors duration-150"
+                  className="flex flex-row items-center gap-x-2 hover:bg-muted-foreground/20  rounded-lg p-2 w-full transition-colors duration-150"
                   href={link.href}
                 >
                   <span>{link.icon}</span>

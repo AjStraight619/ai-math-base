@@ -1,16 +1,16 @@
-import React from "react";
-import { Button } from "../ui/button";
-import { ArrowRight } from "lucide-react";
-import Link from "next/link";
-import { auth } from "@/auth";
+import React from 'react'
+import { Button } from '../ui/button'
+import { ArrowRight } from 'lucide-react'
+import Link from 'next/link'
+import { auth } from '@/auth'
 
 const CallToAction = async () => {
-  const session = await auth();
+  const session = await auth()
 
-  console.log(JSON.stringify(session, null, 2));
+  console.log(JSON.stringify(session, null, 2))
 
   return (
-    <div className="flex md:flex-row flex-col items-center justify-center gap-2 my-16">
+    <div className="flex md:flex-row flex-col items-center justify-center gap-2 my-8">
       {session?.user ? (
         <Link href="/dashboard">
           <div className="bg-gradient-to-tr from-cyan-500 to-purple-700 p-[1px] rounded-md ">
@@ -37,7 +37,7 @@ const CallToAction = async () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default CallToAction;
+export default CallToAction

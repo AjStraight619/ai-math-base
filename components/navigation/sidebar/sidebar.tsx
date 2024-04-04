@@ -94,9 +94,9 @@ const Sidebar = ({ chatMetaData, session }: SidebarProps) => {
             animate="show"
             exit="hidden"
             transition={{ type: 'tween' }}
-            className="fixed top-0 h-full w-48 border-r border-muted-foreground bg-zinc-900 p-2 z-[999]"
+            className="fixed top-0 h-full w-48 border-r border-muted-foreground bg-secondary p-2 z-[999]"
           >
-            <div className="flex flex-col items-center h-full">
+            <div className="flex flex-col items-center h-full overflow-y-auto">
               <div className="flex-1 w-full">
                 {isDashboardPath && (
                   <SidebarDashboard mostRecentChatId={mostRecentChatId} />
@@ -125,7 +125,7 @@ const Sidebar = ({ chatMetaData, session }: SidebarProps) => {
             <ChevronRightIcon className="ml-2" />
           )
         ) : (
-          <div className="w-[2px] h-6 rounded-md bg-gray-50 ml-4" />
+          <div className="w-[4px] h-6 rounded-md bg-gray-50 ml-4" />
         )}
       </motion.button>
     </>

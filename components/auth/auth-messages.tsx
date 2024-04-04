@@ -1,18 +1,14 @@
-import {
-  CircleCheckIcon,
-  TriangleAlert,
-  TriangleAlertIcon,
-} from "lucide-react";
-import React from "react";
+import { CircleCheckIcon, TriangleAlertIcon } from 'lucide-react'
+import React from 'react'
 
 type SuccessMessageProps = {
-  success?: boolean;
-  successMessage?: string;
-};
+  success?: boolean
+  successMessage?: string
+}
 
 type ErrorMessageProps = {
-  errorMessage?: string;
-};
+  errorMessage?: string
+}
 
 export const SuccessMessage = ({
   success,
@@ -23,12 +19,12 @@ export const SuccessMessage = ({
       {success && (
         <div className="w-full p-2 rounded-md bg-emerald-500/30 flex flex-row items-center gap-x-2 text-emerald-400 text-center">
           <CircleCheckIcon />
-          <p className="text-center">{successMessage || ""}</p>
+          <p className="text-center">{successMessage || ''}</p>
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
 export const ErrorMessage = ({ errorMessage }: ErrorMessageProps) => {
   return (
@@ -40,5 +36,5 @@ export const ErrorMessage = ({ errorMessage }: ErrorMessageProps) => {
         </div>
       )}
     </>
-  );
-};
+  )
+}
