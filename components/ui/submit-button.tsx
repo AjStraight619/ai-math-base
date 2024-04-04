@@ -1,13 +1,15 @@
-import React from "react";
-import { Button, ButtonProps } from "./button";
-import { Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { useFormStatus } from "react-dom";
+'use client'
 
-type SubmitButtonProps = ButtonProps & { isPending?: boolean };
+import React from 'react'
+import { Button, ButtonProps } from './button'
+import { Loader2 } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { useFormStatus } from 'react-dom'
+
+type SubmitButtonProps = ButtonProps & { isPending?: boolean }
 
 const SubmitButton = ({ isPending, ...props }: SubmitButtonProps) => {
-  const { pending } = useFormStatus();
+  const { pending } = useFormStatus()
   return (
     <Button
       className={cn(props.className)}
@@ -21,7 +23,7 @@ const SubmitButton = ({ isPending, ...props }: SubmitButtonProps) => {
         props.children
       )}
     </Button>
-  );
-};
+  )
+}
 
-export default SubmitButton;
+export default SubmitButton
