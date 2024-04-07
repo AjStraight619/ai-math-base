@@ -1,37 +1,37 @@
-"use server";
-import { prisma } from "@/lib/prisma";
-import { auth } from "@/auth";
-import { getErrorMessage } from "@/lib/utils";
-import { NewChatServer } from "@/lib/types";
-import { revalidatePath } from "next/cache";
-import { ServerNewChatSchema } from "@/schemas";
+'use server'
+import { prisma } from '@/lib/prisma'
+import { auth } from '@/auth'
+import { getErrorMessage } from '@/lib/utils'
+import { NewChatServer } from '@/lib/types'
+import { revalidatePath } from 'next/cache'
+import { ServerNewChatSchema } from '@/schemas'
 
 export const getChatsByUserId = async () => {
-  const session = await auth();
+  const session = await auth()
 
   if (!session || !session.user) {
     return {
-      error: "Not authenticated",
-    };
+      error: 'Not authenticated',
+    }
   }
   try {
     const chats = await prisma.chat.findMany({
       where: {
         userId: session.user.id,
       },
-    });
+    })
 
     return {
       chats,
       error: null,
-    };
+    }
   } catch (err) {
     return {
       error: getErrorMessage(err),
       chats: null,
-    };
+    }
   }
-};
+}
 
 export const getChatMetaDataByUserId = async (userId: string | undefined) => {
   try {
@@ -44,16 +44,16 @@ export const getChatMetaDataByUserId = async (userId: string | undefined) => {
         name: true,
       },
       orderBy: {
-        updatedAt: "desc",
+        updatedAt: 'desc',
       },
-    });
-    return chatMetaData;
+    })
+    return chatMetaData
   } catch (err) {
-    return [];
+    return []
   } finally {
-    revalidatePath("/chat");
+    revalidatePath('/chat')
   }
-};
+}
 
 export const getChatById = async (chatId: string) => {
   const chat = await prisma.chat.findUnique({
@@ -63,13 +63,13 @@ export const getChatById = async (chatId: string) => {
     include: {
       messages: {
         orderBy: {
-          createdAt: "asc",
+          createdAt: 'asc',
         },
       },
     },
-  });
-  return chat;
-};
+  })
+  return chat
+}
 
 // export const saveMessagesToDb = async (
 //   chatId: string,
@@ -95,7 +95,7 @@ export const getChatById = async (chatId: string) => {
 // };
 
 export const deleteChat = async (formData: FormData) => {
-  const chatId = formData.get("chatId") as string;
+  const chatId = formData.get('chatId') as string
   try {
     const deletedChat = await prisma.$transaction([
       prisma.message.deleteMany({
@@ -108,36 +108,36 @@ export const deleteChat = async (formData: FormData) => {
           id: chatId,
         },
       }),
-    ]);
+    ])
 
     return {
       deletedChat,
       error: null,
-    };
+    }
   } catch (err) {
     return {
       error: getErrorMessage(err),
       deletedChat: null,
-    };
+    }
   } finally {
-    revalidatePath("/chat");
+    revalidatePath('/chat')
   }
-};
+}
 
 export const createNewChat = async (values: NewChatServer) => {
-  console.log("In create new chat function");
-  const validatedValues = ServerNewChatSchema.safeParse(values);
-  const session = await auth();
+  console.log('In create new chat function')
+  const validatedValues = ServerNewChatSchema.safeParse(values)
+  const session = await auth()
   if (!session || !session?.user?.id) {
     return {
-      error: "No valid session!",
-    };
+      error: 'No valid session!',
+    }
   }
 
   if (!validatedValues.success) {
     return {
-      error: "Invalid input values!",
-    };
+      error: 'Invalid input values!',
+    }
   }
   try {
     const newChat = await prisma.chat.create({
@@ -154,17 +154,19 @@ export const createNewChat = async (values: NewChatServer) => {
         id: true,
         name: true,
       },
-    });
+    })
     return {
       newChat,
       error: null,
-    };
+    }
   } catch (err) {
     return {
       newChat: null,
       error: getErrorMessage(err),
-    };
+    }
   } finally {
-    revalidatePath("/chat");
+    revalidatePath('/chat')
   }
-};
+}
+
+export const userMessage = async (message: string) => {}
