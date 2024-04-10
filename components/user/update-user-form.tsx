@@ -1,17 +1,17 @@
-"use client";
-import { UserData, UserFormType } from "@/lib/types";
-import React, { useEffect, useRef, useState, useTransition } from "react";
+'use client'
+import { UserData, UserFormType } from '@/lib/types'
+import React, { useEffect, useRef, useState, useTransition } from 'react'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../ui/card";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { UpdateUserSchema } from "@/schemas";
-import ProfileImage from "./profile-image";
+} from '../ui/card'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { UpdateUserSchema } from '@/schemas'
+import ProfileImage from './profile-image'
 import {
   FormControl,
   FormField,
@@ -19,100 +19,100 @@ import {
   FormLabel,
   Form,
   FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
-import SubmitButton from "../ui/submit-button";
-import { updateUser } from "@/actions/user";
-import { Button } from "../ui/button";
-import { getSignedURL } from "@/actions/file";
-import { CircleCheckIcon, TriangleAlertIcon } from "lucide-react";
+} from '../ui/form'
+import { Input } from '../ui/input'
+import SubmitButton from '../ui/submit-button'
+import { updateUser } from '@/actions/user'
+import { Button } from '../ui/button'
+import { getSignedURL } from '@/actions/file'
+import { CircleCheckIcon, TriangleAlertIcon } from 'lucide-react'
 
 type UpdateUserFormProps = {
-  userData: UserData;
-};
+  userData: UserData
+}
 
 const UpdateUserForm = ({ userData }: UpdateUserFormProps) => {
-  const [isPending, startTransition] = useTransition();
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const [error, setError] = useState<string | null>("");
-  const [success, setSuccess] = useState<boolean | undefined>();
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [isPending, startTransition] = useTransition()
+  const [selectedImage, setSelectedImage] = useState<File | null>(null)
+  const [error, setError] = useState<string | null>('')
+  const [success, setSuccess] = useState<boolean | undefined>()
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const form = useForm<UserFormType>({
     resolver: zodResolver(UpdateUserSchema),
     defaultValues: {
-      name: userData?.user?.name ?? "",
-      email: userData?.user?.email ?? "",
-      image: userData?.user?.image ?? "",
+      name: userData?.user?.name ?? '',
+      email: userData?.user?.email ?? '',
+      image: userData?.user?.image ?? '',
     },
-  });
+  })
 
   const onSubmit = async (values: UserFormType) => {
-    setError("");
-    setSuccess(undefined);
-    const signedUrl = await getSignedURL();
+    setError('')
+    setSuccess(undefined)
+    const signedUrl = await getSignedURL()
 
     if (signedUrl?.success?.url && selectedImage) {
-      const url = signedUrl.success.url;
+      const url = signedUrl.success.url
       try {
         const response = await fetch(url, {
-          method: "PUT",
+          method: 'PUT',
           headers: {
-            "Content-Type": selectedImage.type,
+            'Content-Type': selectedImage.type,
           },
           body: selectedImage,
-        });
+        })
         if (!response.ok) {
-          throw new Error("Upload failed with status " + response.status);
+          throw new Error('Upload failed with status ' + response.status)
         }
       } catch (error) {
-        console.error("Error during file upload:", error);
-        setError("Failed to upload image.");
+        console.error('Error during file upload:', error)
+        setError('Failed to upload image.')
       }
     }
 
     startTransition(() => {
       updateUser(values).then((data) => {
-        setError(data?.error);
-        setSuccess(!!data.user);
-      });
-    });
-  };
+        setError(data?.error)
+        setSuccess(!!data.user)
+      })
+    })
+  }
 
   const onSubmit2 = async (values: UserFormType) => {
-    setError("");
-    setSuccess(undefined);
-    const signedUrl = await getSignedURL();
+    setError('')
+    setSuccess(undefined)
+    const signedUrl = await getSignedURL()
 
     startTransition(async () => {
       if (signedUrl?.success?.url && selectedImage) {
-        const url = signedUrl.success.url;
+        const url = signedUrl.success.url
         try {
           const response = await fetch(url, {
-            method: "PUT",
+            method: 'PUT',
             headers: {
-              "Content-Type": selectedImage.type,
+              'Content-Type': selectedImage.type,
             },
             body: selectedImage,
-          });
+          })
           if (!response.ok) {
-            throw new Error("Upload failed with status " + response.status);
+            throw new Error('Upload failed with status ' + response.status)
           }
         } catch (error) {
-          console.error("Error during file upload:", error);
-          setError("Failed to upload image.");
+          console.error('Error during file upload:', error)
+          setError('Failed to upload image.')
         }
       }
       await updateUser(values).then((data) => {
-        setError(data?.error);
-        setSuccess(!!data.user);
-      });
-    });
-  };
+        setError(data?.error)
+        setSuccess(!!data.user)
+      })
+    })
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedImage(e.target.files?.[0] ?? null);
-  };
+    setSelectedImage(e.target.files?.[0] ?? null)
+  }
 
   return (
     <Card className="w-full md:max-w-[24rem]">
@@ -202,7 +202,7 @@ const UpdateUserForm = ({ userData }: UpdateUserFormProps) => {
         </Form>
       </CardContent>
     </Card>
-  );
-};
+  )
+}
 
-export default UpdateUserForm;
+export default UpdateUserForm

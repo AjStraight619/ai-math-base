@@ -1,11 +1,14 @@
-import React from "react";
-import Image from "next/image";
-import { Button } from "../ui/button";
-import { navLinks } from "@/lib/data";
-import Link from "next/link";
-import { ModeToggle } from "../ui/mode-toggle";
-import MobileMenu from "./mobile-menu";
+import React from 'react'
+import Image from 'next/image'
+import { Button } from '../ui/button'
+import { navLinks } from '@/lib/data'
+import Link from 'next/link'
+import { ModeToggle } from '../ui/mode-toggle'
+import MobileMenu from './mobile-menu'
+import { auth } from '@/auth'
+import UserButton from '../user/user-button'
 const Nav = async () => {
+  const session = await auth()
   return (
     <>
       <MobileMenu />
@@ -32,14 +35,12 @@ const Nav = async () => {
               </ul>
             </div>
             <div className="flex items-center gap-4">
-              {true ? (
+              {session && (
                 <div className="inline-flex items-center">
                   <span className="ml-2">
-                    {/* {user?.firstName + " " + user?.lastName} */}
+                    <UserButton />
                   </span>
                 </div>
-              ) : (
-                <Button></Button>
               )}
               <ModeToggle />
             </div>
@@ -47,7 +48,7 @@ const Nav = async () => {
         </div>
       </header>
     </>
-  );
-};
+  )
+}
 
-export default Nav;
+export default Nav

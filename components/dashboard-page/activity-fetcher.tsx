@@ -16,8 +16,6 @@ const ActivityFetcher = async ({ session }: ActivityFetcherProps) => {
 
   const { user, chats, notes } = await getDashboardData(session.user.id)
 
-  await wait(3000)
-
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <ChatActivity chats={chats} />
