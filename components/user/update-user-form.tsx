@@ -52,38 +52,6 @@ const UpdateUserForm = ({ userData }: UpdateUserFormProps) => {
     setSuccess(undefined)
     const signedUrl = await getSignedURL()
 
-    if (signedUrl?.success?.url && selectedImage) {
-      const url = signedUrl.success.url
-      try {
-        const response = await fetch(url, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': selectedImage.type,
-          },
-          body: selectedImage,
-        })
-        if (!response.ok) {
-          throw new Error('Upload failed with status ' + response.status)
-        }
-      } catch (error) {
-        console.error('Error during file upload:', error)
-        setError('Failed to upload image.')
-      }
-    }
-
-    startTransition(() => {
-      updateUser(values).then((data) => {
-        setError(data?.error)
-        setSuccess(!!data.user)
-      })
-    })
-  }
-
-  const onSubmit2 = async (values: UserFormType) => {
-    setError('')
-    setSuccess(undefined)
-    const signedUrl = await getSignedURL()
-
     startTransition(async () => {
       if (signedUrl?.success?.url && selectedImage) {
         const url = signedUrl.success.url
@@ -122,7 +90,7 @@ const UpdateUserForm = ({ userData }: UpdateUserFormProps) => {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit2)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-4">
               <FormField
                 control={form.control}
