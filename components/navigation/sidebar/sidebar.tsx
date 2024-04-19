@@ -77,7 +77,8 @@ const Sidebar = ({ chatMetaData, session }: SidebarProps) => {
     pathname === '/login' ||
     pathname.includes('/settings') ||
     pathname.includes('/forgot-password') ||
-    pathname.includes('/dashboard')
+    pathname.includes('/dashboard') ||
+    pathname.includes('/note')
   )
     return null
 

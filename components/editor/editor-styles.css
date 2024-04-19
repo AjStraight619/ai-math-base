@@ -1,0 +1,64 @@
+/* Editor container with some Tailwind equivalents */
+.editor-container {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ContentEditable with Tailwind styles translated to CSS */
+.editor-content-editable {
+  width: 50rem; /* w-[50rem] */
+  height: 100%; /* h-full */
+  padding: 1rem; /* p-4 */
+  outline: none; /* focus:outline-none */
+  border: 2px solid #ccc; /* border-2 border-muted-foreground */
+  border-radius: 0; /* rounded-md */
+}
+
+/* Lists */
+.editor-container ol,
+.editor-container ul {
+  margin-left: 20px; /* Tailwind equivalent: ml-5 */
+  padding-left: 0; /* Reset padding */
+}
+
+.editor-container ol {
+  list-style-type: decimal; /* Standard ordered list */
+}
+
+.editor-container ul {
+  list-style-type: disc; /* Standard unordered list */
+}
+
+.editor-container li {
+  margin-bottom: 0.25rem; /* mb-1 */
+  line-height: 1.6; /* leading-loose */
+}
+
+/* Headings */
+.editor-container h1 {
+  font-size: 2rem; /* text-2xl */
+  font-weight: bold; /* font-bold */
+}
+
+.editor-container h2 {
+  font-size: 1.5rem; /* text-xl */
+  font-weight: 600; /* font-semibold */
+}
+
+.editor-container h3 {
+  font-size: 1.25rem; /* text-lg */
+  font-weight: 500; /* font-medium */
+}
+
+/* Text styles */
+.editor-text-bold {
+  font-weight: bold; /* font-bold */
+}
+
+.editor-text-italic {
+  font-style: italic; /* italic */
+}
+
+.editor-text-strikethrough {
+  text-decoration: line-through; /* line-through */
+}

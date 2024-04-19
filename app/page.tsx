@@ -13,7 +13,7 @@ export default async function Home() {
     redirect('/dashboard')
   }
   return (
-    <main className="flex min-h-screen flex-col items-center w-full">
+    <main className="flex min-h-screen flex-col items-center w-full ">
       <Nav />
       <Hero />
       <CallToAction />
